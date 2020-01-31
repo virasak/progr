@@ -54,7 +54,7 @@ describe('Runner with counter program', () => {
     setImmediate(() => {
       expect(counter.getState()).toEqual(1);
     });
-  })
+  });
 
   it('should accept initial action with promise-liked message', () => {
     const counter = runtime(program)(0, resolve => resolve(Promise.resolve(CounterMessage.Inc)));
@@ -63,4 +63,12 @@ describe('Runner with counter program', () => {
       expect(counter.getState()).toEqual(1);
     });
   })
+
+  it('should accept undefined as message without error', () => {
+    const counter = runtime(program)(0, resolve => resolve(undefined))
+    expect(counter.getState()).toEqual(0);
+
+    counter.dispatch(undefined);
+    expect(counter.getState()).toEqual(0);
+  });
 });
