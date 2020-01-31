@@ -1,5 +1,5 @@
 export type Dispatch<T> = (message: T) => void
-export type Action<T> = (dispatch: (message: T | PromiseLike<T>) => void) => void;
+export type Action<T> = (resolve: (message?: T | PromiseLike<T>) => void) => void;
 export interface Program<S, T> {
   update(state: S, message: T): [S] | [S, Action<T>];
   view(state: S, dispatch: Dispatch<T>): void;
@@ -10,7 +10,7 @@ export class Runner<S, T> {
     this.render(action);
   }
 
-  getState = () => this.state;
+  getState = () => this.state
 
   dispatch = (message?: T) => {
     if (message !== undefined) {
@@ -18,7 +18,7 @@ export class Runner<S, T> {
       this.state = state;
       this.render(action);
     }
-  };
+  }
 
   private render = (action?: Action<T>) => {
     this.program.view(this.state, this.dispatch);
